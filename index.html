@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BharatPlate HSRP — Order your High Security Number Plate</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --paper:#f7f6f1;
+  --card:#ffffff;
+  --ink:#1b1b1b;
+  --mist:#8a8782;
+  --line:#e6e3da;
+  --blue:#1e4d9c;
+  --yellow:#ffc53d;
+  --green:#1a9c5b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Inter',sans-serif;background:var(--paper);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:680px;margin:0 auto;padding:0 24px;}
+
+/* HEADER */
+header{padding:28px 0;}
+header .wrap{display:flex;align-items:center;justify-content:space-between;}
+.logo{font-family:'Oswald',sans-serif;font-weight:600;letter-spacing:0.02em;font-size:1.15rem;}
+.logo .dot{color:var(--blue);}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--mist);}
+.call-btn{
+  display:flex;align-items:center;gap:7px;
+  background:var(--ink);color:#fff;text-decoration:none;
+  padding:9px 16px;border-radius:100px;
+  font-family:'Inter',sans-serif;font-weight:600;font-size:0.85rem;
+  transition:opacity 0.15s;white-space:nowrap;
+}
+.call-btn:hover{opacity:0.85;}
+.call-btn svg{width:15px;height:15px;flex-shrink:0;}
+
+/* HERO */
+.hero{padding:24px 0 40px;text-align:center;}
+h1{font-family:'Oswald',sans-serif;font-weight:600;font-size:clamp(1.7rem,4.5vw,2.4rem);letter-spacing:0.01em;margin-bottom:10px;}
+.hero p{color:var(--mist);max-width:440px;margin:0 auto 36px;font-size:0.96rem;}
+
+/* PLATE STAGE */
+.plate-stage{display:flex;flex-direction:column;align-items:center;gap:18px;}
+.plate-row{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:24px;}
+.plate-item{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.plate-item.hidden{display:none;}
+.plate-tag{font-family:'IBM Plex Mono',monospace;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--mist);display:none;}
+.plate-row.show-tags .plate-tag{display:block;}
+
+.plate{
+  position:relative;background:#ffffff;border-radius:8px;border:3px solid #161616;
+  display:flex;align-items:stretch;
+  box-shadow:0 1px 0 rgba(0,0,0,0.04),0 14px 30px -16px rgba(0,0,0,0.4);
+  transition:background 0.25s,width 0.3s,height 0.3s;overflow:hidden;
+}
+.plate.commercial{background:var(--yellow);}
+.plate.car,.plate.commercial-car,.plate.commercial-truck{width:400px;height:90px;}
+.plate.bike{width:260px;height:82px;}
+.plate.bike-square{width:200px;height:172px;}
+
+.plate-left{
+  flex-shrink:0;width:46px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:6px;padding:6px 0;
+}
+.ashok-chakra{
+  width:26px;height:26px;display:block;
+  background:radial-gradient(circle at 35% 30%,#ddeeff,#a8c9f0 55%,#e8f0fb 100%);
+  border-radius:50%;box-shadow:0 0 0 1px rgba(30,77,156,0.25);
+}
+.ind-label{font-family:'Oswald',sans-serif;font-weight:700;font-size:0.62rem;letter-spacing:0.12em;color:var(--blue);}
+
+.plate-number{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Sans Condensed','Oswald',sans-serif;font-weight:900;
+  letter-spacing:0.08em;color:#1c1c1c;text-transform:uppercase;word-break:break-all;padding:0 14px;
+  text-shadow:1px 1.5px 0 rgba(0,0,0,0.22),2px 3px 4px rgba(0,0,0,0.18);
+  transition:font-size 0.2s;
+}
+.plate.car .plate-number,.plate.commercial-car .plate-number,.plate.commercial-truck .plate-number{ transition:opacity 0.4s ease;font-size:2.5rem;}
+.plate.bike:not(.bike-square) .plate-number{ transition:opacity 0.4s ease;font-size:1.3rem;}
+
+.plate-number-stack{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0 8px;}
+.plate-line{
+  font-family:'Noto Sans Condensed','Oswald',sans-serif;font-weight:900;
+  letter-spacing:0.04em;color:#1c1c1c;text-transform:uppercase;font-size:1.7rem;line-height:1.2;
+  text-shadow:1px 1.5px 0 rgba(0,0,0,0.22),2px 3px 4px rgba(0,0,0,0.18);
+}
+.plate-caption{font-family:'IBM Plex Mono',monospace;font-size:0.75rem;color:var(--mist);text-align:center;}
+
+/* CARD */
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:28px;margin-bottom:32px;}
+.label{font-size:0.78rem;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--mist);margin-bottom:10px;}
+.field{margin-bottom:24px;}
+
+.segmented{display:flex;border:1px solid var(--line);border-radius:10px;overflow:hidden;}
+.segmented .seg{flex:1;text-align:center;padding:10px 8px;font-size:0.85rem;font-weight:500;color:var(--mist);cursor:pointer;border-right:1px solid var(--line);transition:all 0.15s;}
+.segmented .seg:last-child{border-right:none;}
+.segmented .seg.active{background:var(--ink);color:#fff;}
+.segmented .seg:hover:not(.active){background:#f2f1ec;}
+.sub-segmented{display:none;margin-top:10px;}
+.sub-segmented.visible{display:flex;}
+
+input[type="text"],input[type="tel"],select,textarea{
+  width:100%;background:var(--paper);border:1px solid var(--line);border-radius:10px;
+  padding:13px 14px;color:var(--ink);font-family:'Inter',sans-serif;font-size:0.95rem;
+  outline:none;transition:border-color 0.15s;
+}
+input[type="text"]:focus,input[type="tel"]:focus,select:focus,textarea:focus{border-color:var(--blue);}
+#plateInput{font-family:'Oswald',sans-serif;font-size:1.1rem;letter-spacing:0.12em;text-transform:uppercase;}
+.hint{font-size:0.78rem;color:var(--mist);margin-top:8px;}
+
+/* SUMMARY */
+.summary{border-top:1px solid var(--line);padding-top:18px;margin-top:4px;}
+.summary-row{display:flex;justify-content:space-between;font-size:0.9rem;color:var(--mist);padding:5px 0;}
+.summary-row.total{border-top:1px solid var(--line);margin-top:8px;padding-top:12px;color:var(--ink);font-weight:600;font-size:1.02rem;}
+.summary-row.total span:last-child{font-family:'IBM Plex Mono',monospace;}
+
+/* TERMS */
+.terms{display:flex;align-items:flex-start;gap:9px;margin:18px 0;font-size:0.82rem;color:var(--mist);}
+.terms input{margin-top:3px;width:15px;height:15px;accent-color:var(--ink);}
+.terms a{color:var(--ink);text-decoration:underline;}
+
+/* BOOK NOW BUTTON */
+.book-btn{
+  width:100%;background:var(--ink);color:#fff;border:none;border-radius:10px;
+  padding:15px;font-family:'Oswald',sans-serif;font-weight:600;font-size:1rem;
+  letter-spacing:0.03em;cursor:pointer;transition:opacity 0.18s;
+}
+.book-btn:disabled{opacity:0.35;cursor:not-allowed;}
+.book-btn:not(:disabled):hover{opacity:0.88;}
+.book-note{text-align:center;font-size:0.74rem;color:var(--mist);margin-top:10px;}
+
+/* TRUST LINE */
+.trust{display:flex;justify-content:center;flex-wrap:wrap;gap:8px 18px;font-size:0.82rem;color:var(--mist);margin-bottom:56px;text-align:center;}
+.trust span{position:relative;}
+.trust span:not(:last-child)::after{content:"·";position:absolute;right:-13px;color:var(--line);}
+
+footer{border-top:1px solid var(--line);padding:22px 0;text-align:center;color:var(--mist);font-size:0.78rem;}
+footer .foot-links{margin-bottom:8px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+footer .foot-links a{color:var(--mist);text-decoration:underline;}
+footer .foot-links a:hover{color:var(--ink);}
+
+/* ============================================================
+   ADDRESS MODAL OVERLAY
+============================================================ */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(27,27,27,0.55);
+  backdrop-filter:blur(4px);z-index:100;
+  display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.25s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+
+.modal-sheet{
+  width:100%;max-width:680px;
+  background:var(--card);
+  border-radius:20px 20px 0 0;
+  max-height:92vh;overflow-y:auto;
+  transform:translateY(40px);transition:transform 0.3s ease;
+  padding:28px 28px 40px;
+}
+.modal-overlay.open .modal-sheet{transform:translateY(0);}
+
+.modal-handle{width:40px;height:4px;background:var(--line);border-radius:2px;margin:0 auto 22px;}
+
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.modal-title{font-family:'Oswald',sans-serif;font-weight:600;font-size:1.2rem;letter-spacing:0.01em;}
+.modal-close{
+  width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--paper);
+  font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--mist);
+}
+.modal-close:hover{background:var(--line);}
+
+/* mini plate preview inside modal */
+.modal-plate-preview{
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;
+  padding:16px;margin-bottom:22px;
+  display:flex;align-items:center;gap:14px;
+}
+.mini-plate-wrap{display:flex;flex-direction:column;align-items:center;gap:5px;flex-shrink:0;}
+.mini-plate{
+  background:#fff;border:2px solid #161616;border-radius:5px;
+  display:flex;align-items:stretch;overflow:hidden;
+  box-shadow:0 4px 10px -4px rgba(0,0,0,0.28);
+}
+.mini-plate.commercial{background:var(--yellow);}
+.mini-left{
+  width:24px;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:3px;padding:3px 0;
+}
+.mini-chakra{
+  width:12px;height:12px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#ddeeff,#a8c9f0 55%,#e8f0fb 100%);
+}
+.mini-ind{font-family:'Oswald',sans-serif;font-weight:700;font-size:0.38rem;letter-spacing:0.1em;color:var(--blue);}
+.mini-num{
+  font-family:'Noto Sans Condensed','Oswald',sans-serif;font-weight:900;
+  font-size:1rem;letter-spacing:0.06em;color:#1c1c1c;padding:0 8px;
+  display:flex;align-items:center;
+  text-shadow:1px 1px 0 rgba(0,0,0,0.2);
+}
+.mini-label{font-family:'IBM Plex Mono',monospace;font-size:0.62rem;color:var(--mist);}
+/* bike mini plates inside modal */
+.mini-plates-row{display:flex;align-items:flex-end;gap:10px;justify-content:center;}
+.mini-plate-item{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.mini-plate-item.hidden{display:none;}
+.mini-tag{font-family:'IBM Plex Mono',monospace;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--mist);}
+/* long front bike mini */
+.mini-plate.bike-front{width:140px;height:38px;}
+.mini-plate.bike-front .mini-num{font-size:0.82rem;}
+/* square back bike mini */
+.mini-plate.bike-back{width:84px;height:84px;flex-direction:column;}
+.mini-plate.bike-back .mini-left{width:100%;height:28px;flex-direction:row;justify-content:flex-start;padding:0 5px;gap:4px;border-right:none;border-bottom:none;}
+.mini-plate.bike-back .mini-num{flex-direction:column;align-items:center;justify-content:center;font-size:0.82rem;letter-spacing:0.04em;line-height:1.2;text-align:center;}
+
+
+.modal-plate-info{flex:1;}
+.modal-plate-info .pi-heading{font-weight:600;font-size:0.92rem;margin-bottom:3px;}
+.modal-plate-info .pi-sub{font-size:0.82rem;color:var(--mist);}
+
+/* address form */
+.addr-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+@media(max-width:520px){.addr-grid{grid-template-columns:1fr;}}
+.addr-field{display:flex;flex-direction:column;gap:6px;}
+.addr-field.full{grid-column:1/-1;}
+.addr-field label{font-size:0.8rem;font-weight:600;color:var(--ink);}
+
+/* modal order summary */
+.modal-summary{
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;
+  padding:16px;margin:20px 0;
+}
+.modal-summary .ms-row{display:flex;justify-content:space-between;font-size:0.88rem;color:var(--mist);padding:4px 0;}
+.modal-summary .ms-row.total{border-top:1px solid var(--line);margin-top:6px;padding-top:10px;color:var(--ink);font-weight:700;font-size:1rem;}
+.modal-summary .ms-row.total span:last-child{font-family:'IBM Plex Mono',monospace;color:var(--blue);}
+.free-ship{color:var(--green);font-weight:600;}
+
+/* pay now button */
+.pay-now-btn{
+  width:100%;background:var(--blue);color:#fff;border:none;border-radius:12px;
+  padding:16px;font-family:'Oswald',sans-serif;font-weight:600;font-size:1.05rem;
+  letter-spacing:0.03em;cursor:pointer;transition:opacity 0.18s;margin-top:6px;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.pay-now-btn:disabled{opacity:0.35;cursor:not-allowed;}
+.pay-now-btn:not(:disabled):hover{opacity:0.88;}
+.rzp-logo{font-size:0.78rem;opacity:0.75;font-family:'IBM Plex Mono',monospace;}
+.pay-now-note{text-align:center;font-size:0.73rem;color:var(--mist);margin-top:9px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="logo">BharatPlate<span class="dot">·</span>HSRP</div>
+    <a class="call-btn" href="tel:+919835766672">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+      </svg>
+      Call Now
+    </a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Your number, on a real HSRP.</h1>
+    <p>Type your registration number, pick your vehicle, choose front, back or both — get it laser-branded and shipped to your door.</p>
+
+    <div class="plate-stage">
+      <div class="plate-row" id="plateRow">
+
+        <div class="plate-item" id="frontItem">
+          <div class="plate-tag">Front</div>
+          <div class="plate car" id="plateFront">
+            <div class="plate-left">
+              <svg class="ashok-chakra" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="none" stroke="#1e4d9c" stroke-width="4"/>
+                <circle cx="50" cy="50" r="6" fill="#1e4d9c"/>
+                <circle cx="50" cy="50" r="3" fill="#ffffff"/>
+                <line x1="50" y1="50" x2="50.0000" y2="10.0000" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="60.3528" y2="10.6770" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="69.8481" y2="13.3617" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="77.9423" y2="18.6748" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="84.1421" y2="25.8579" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="88.1735" y2="34.5671" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="89.9519" y2="44.3878" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="89.3230" y2="54.7036" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="86.6383" y2="64.1519" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="81.3252" y2="72.0577" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="74.1421" y2="78.1421" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="65.4329" y2="81.8265" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="55.6122" y2="83.0481" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="45.2964" y2="81.6770" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="35.8481" y2="78.2706" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="27.9423" y2="72.3252" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="21.8579" y2="64.1421" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="17.8265" y2="54.5671" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="16.0481" y2="44.3878" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="16.6770" y2="34.0710" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="19.3617" y2="24.1519" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="24.6748" y2="15.8577" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="31.8579" y2="9.8579" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="40.5671" y2="6.1735" stroke="#1e4d9c" stroke-width="2"/>
+              </svg>
+              <div class="ind-label">IND</div>
+            </div>
+            <div class="plate-number" id="plateFrontText">JAAT 0001</div>
+          </div>
+        </div>
+
+        <div class="plate-item hidden" id="backItem">
+          <div class="plate-tag">Back</div>
+          <div class="plate car" id="plateBack">
+            <div class="plate-left">
+              <svg class="ashok-chakra" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="46" fill="none" stroke="#1e4d9c" stroke-width="4"/>
+                <circle cx="50" cy="50" r="6" fill="#1e4d9c"/>
+                <circle cx="50" cy="50" r="3" fill="#ffffff"/>
+                <line x1="50" y1="50" x2="50.0000" y2="10.0000" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="60.3528" y2="10.6770" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="69.8481" y2="13.3617" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="77.9423" y2="18.6748" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="84.1421" y2="25.8579" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="88.1735" y2="34.5671" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="89.9519" y2="44.3878" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="89.3230" y2="54.7036" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="86.6383" y2="64.1519" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="81.3252" y2="72.0577" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="74.1421" y2="78.1421" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="65.4329" y2="81.8265" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="55.6122" y2="83.0481" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="45.2964" y2="81.6770" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="35.8481" y2="78.2706" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="27.9423" y2="72.3252" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="21.8579" y2="64.1421" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="17.8265" y2="54.5671" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="16.0481" y2="44.3878" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="16.6770" y2="34.0710" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="19.3617" y2="24.1519" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="24.6748" y2="15.8577" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="31.8579" y2="9.8579" stroke="#1e4d9c" stroke-width="2"/>
+                <line x1="50" y1="50" x2="40.5671" y2="6.1735" stroke="#1e4d9c" stroke-width="2"/>
+              </svg>
+              <div class="ind-label">IND</div>
+            </div>
+            <div class="plate-number" id="plateBackText">JAAT 0001</div>
+            <div class="plate-number-stack" id="plateBackStack" style="display:none;">
+              <div class="plate-line" id="plateBackLine1">MH02H</div>
+              <div class="plate-line" id="plateBackLine2">2444</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="plate-caption" id="plateCaption">Private vehicle · Front plate · White base</div>
+    </div>
+  </section>
+
+  <!-- CONFIGURATOR -->
+  <section class="card">
+    <div class="field">
+      <div class="label">Vehicle type</div>
+      <div class="segmented" id="vehicleTabs">
+        <div class="seg active" data-type="car">Car</div>
+        <div class="seg" data-type="bike">Bike</div>
+        <div class="seg" data-type="commercial">Commercial</div>
+      </div>
+      <div class="segmented sub-segmented" id="commercialSubTabs">
+        <div class="seg active" data-sub="commercial-truck">Truck / Pickup</div>
+        <div class="seg" data-sub="commercial-car">Taxi / Comm. Car</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="label">Registration number <span style="color:#c0392b;font-size:0.85rem;">*</span></div>
+      <input type="text" id="plateInput" maxlength="11" value="" placeholder="JAAT 0001">
+      <div class="hint" style="color:#c0392b;font-weight:500;">* Required — plate will be made exactly as you enter here</div>
+    </div>
+
+    <div class="field">
+      <div class="label">Plates required</div>
+      <div class="segmented" id="sideOptions">
+        <div class="seg active" data-side="both">Front + Back</div>
+        <div class="seg" data-side="front">Front only</div>
+        <div class="seg" data-side="back">Back only</div>
+      </div>
+    </div>
+
+    <div class="summary">
+      <div class="summary-row"><span id="sumVehicle">Car HSRP</span><span id="sumUnitPrice">₹650</span></div>
+      <div class="summary-row"><span id="sumConfig">Front + Back · 1 set</span><span>Free shipping</span></div>
+      <div class="summary-row total"><span>Total</span><span id="sumTotal">₹650</span></div>
+    </div>
+
+    <label class="terms">
+      <input type="checkbox" id="termsCheck">
+      <span>I confirm this number matches my vehicle's RC and I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms</a> &amp; <a href="refund.html" target="_blank" rel="noopener">Refund Policy</a>.</span>
+    </label>
+
+    <button class="book-btn" id="bookBtn" disabled>Book Now →</button>
+    <div class="book-note">Free shipping · Delivered in 3–5 working days</div>
+  </section>
+
+  <div class="trust">
+    <span>MoRTH compliant</span>
+    <span>Made to your RC</span>
+    <span>3–5 day delivery</span>
+  </div>
+</main>
+
+<footer>
+  <div class="foot-links">
+    <a href="terms.html">Terms &amp; Conditions</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="refund.html">Refund Policy</a>
+    <a href="tel:+919835766672">Call Us</a>
+  </div>
+  © 2026 BharatPlate HSRP. All rights reserved.
+</footer>
+
+<!-- ===================================================
+     ADDRESS MODAL
+=================================================== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+
+    <div class="modal-header">
+      <div class="modal-title">Delivery Details</div>
+      <button class="modal-close" id="modalClose">✕</button>
+    </div>
+
+    <!-- Mini plate preview -->
+    <div class="modal-plate-preview">
+      <div class="mini-plate-wrap">
+        <!-- non-bike: single plate -->
+        <div id="miniSingle">
+          <div class="mini-plate" id="miniPlate">
+            <div class="mini-left">
+              <div class="mini-chakra"></div>
+              <div class="mini-ind">IND</div>
+            </div>
+            <div class="mini-num" id="miniNum">JAAT 0001</div>
+          </div>
+        </div>
+        <!-- bike: front + back plates -->
+        <div id="miniBikeWrap" style="display:none;">
+          <div class="mini-plates-row">
+            <div class="mini-plate-item" id="miniBikeFrontItem">
+              <div class="mini-tag">Front</div>
+              <div class="mini-plate bike-front" id="miniBikeFront">
+                <div class="mini-left">
+                  <div class="mini-chakra"></div>
+                  <div class="mini-ind">IND</div>
+                </div>
+                <div class="mini-num" id="miniBikeFrontNum">JAAT 0001</div>
+              </div>
+            </div>
+            <div class="mini-plate-item" id="miniBikeBackItem">
+              <div class="mini-tag">Back</div>
+              <div class="mini-plate bike-back" id="miniBikeBack">
+                <div class="mini-left">
+                  <div class="mini-chakra"></div>
+                  <div class="mini-ind">IND</div>
+                </div>
+                <div class="mini-num" id="miniBikeBackNum"><span id="miniBikeL1">JAAT</span><br><span id="miniBikeL2">0001</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mini-label" id="miniLabel">Car · Front + Back</div>
+      </div>
+      <div class="modal-plate-info">
+        <div class="pi-heading" id="modalPlateHeading">Car HSRP — MH02H2444</div>
+        <div class="pi-sub" id="modalPlateSub">Front + Back · White base</div>
+      </div>
+    </div>
+
+    <!-- Address form -->
+    <div class="addr-grid">
+      <div class="addr-field full">
+        <label>Full Name *</label>
+        <input type="text" id="addrName" placeholder="As on Aadhaar / RC">
+      </div>
+      <div class="addr-field full">
+        <label>Phone Number *</label>
+        <input type="tel" id="addrPhone" maxlength="10" placeholder="10-digit mobile number">
+      </div>
+      <div class="addr-field full">
+        <label>Address (House / Flat / Street) *</label>
+        <input type="text" id="addrStreet" placeholder="e.g. 12A Nehru Nagar, MG Road">
+      </div>
+      <div class="addr-field full">
+        <label>Landmark</label>
+        <input type="text" id="addrLandmark" placeholder="e.g. Near SBI Bank">
+      </div>
+      <div class="addr-field">
+        <label>City *</label>
+        <input type="text" id="addrCity" placeholder="e.g. Garhwa">
+      </div>
+      <div class="addr-field">
+        <label>Pincode *</label>
+        <input type="text" id="addrPin" maxlength="6" placeholder="6-digit pincode">
+      </div>
+      <div class="addr-field full">
+        <label>State *</label>
+        <select id="addrState">
+          <option value="">— Select State —</option>
+          <option>Andhra Pradesh</option><option>Arunachal Pradesh</option><option>Assam</option>
+          <option>Bihar</option><option>Chhattisgarh</option><option>Goa</option>
+          <option>Gujarat</option><option>Haryana</option><option>Himachal Pradesh</option>
+          <option>Jharkhand</option><option>Karnataka</option><option>Kerala</option>
+          <option>Madhya Pradesh</option><option>Maharashtra</option><option>Manipur</option>
+          <option>Meghalaya</option><option>Mizoram</option><option>Nagaland</option>
+          <option>Odisha</option><option>Punjab</option><option>Rajasthan</option>
+          <option>Sikkim</option><option>Tamil Nadu</option><option>Telangana</option>
+          <option>Tripura</option><option>Uttar Pradesh</option><option>Uttarakhand</option>
+          <option>West Bengal</option><option>Delhi</option><option>Puducherry</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Order summary in modal -->
+    <div class="modal-summary">
+      <div class="ms-row"><span id="msSumVehicle">Car HSRP</span><span id="msSumPrice">₹650</span></div>
+      <div class="ms-row"><span id="msSumConfig">Front + Back · 1 set</span><span class="free-ship">FREE Shipping</span></div>
+      <div class="ms-row total"><span>Pay Now</span><span id="msSumTotal">₹650</span></div>
+    </div>
+
+    <button class="pay-now-btn" id="payNowBtn">
+      <span>Pay Now — <span id="payNowAmount">₹650</span></span>
+      <span class="rzp-logo">via Razorpay</span>
+    </button>
+    <div class="pay-now-note">100% Secure · Payments powered by Razorpay</div>
+  </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+const PRICING = {
+  car:               { label:"Car HSRP",               unit:650, single:350, cls:"plate car" },
+  bike:              { label:"Bike HSRP",               unit:450, single:250, cls:"plate bike" },
+  "commercial-truck":{ label:"Commercial (Truck) HSRP", unit:750, single:400, cls:"plate commercial-truck commercial" },
+  "commercial-car":  { label:"Commercial (Taxi) HSRP",  unit:700, single:380, cls:"plate commercial-car commercial" }
+};
+
+let state = { vehicle:"car", commercialSub:"commercial-truck", side:"both", text:"" };
+
+const plateRow      = document.getElementById('plateRow');
+const frontItem     = document.getElementById('frontItem');
+const backItem      = document.getElementById('backItem');
+const plateFront    = document.getElementById('plateFront');
+const plateBack     = document.getElementById('plateBack');
+const plateFrontText= document.getElementById('plateFrontText');
+const plateBackText = document.getElementById('plateBackText');
+const plateBackStack= document.getElementById('plateBackStack');
+const plateBackLine1= document.getElementById('plateBackLine1');
+const plateBackLine2= document.getElementById('plateBackLine2');
+const plateCaption  = document.getElementById('plateCaption');
+const plateInput    = document.getElementById('plateInput');
+const vehicleTabs   = document.querySelectorAll('#vehicleTabs .seg');
+const subTabs       = document.querySelectorAll('#commercialSubTabs .seg');
+const commercialSubTabs = document.getElementById('commercialSubTabs');
+const sideOpts      = document.querySelectorAll('#sideOptions .seg');
+const termsCheck    = document.getElementById('termsCheck');
+const bookBtn       = document.getElementById('bookBtn');
+
+// Modal refs
+const modalOverlay  = document.getElementById('modalOverlay');
+const modalClose    = document.getElementById('modalClose');
+const miniPlate     = document.getElementById('miniPlate');
+const miniNum       = document.getElementById('miniNum');
+const miniLabel     = document.getElementById('miniLabel');
+const payNowBtn     = document.getElementById('payNowBtn');
+
+function activeVehicleKey(){
+  return state.vehicle === "commercial" ? state.commercialSub : state.vehicle;
+}
+
+function splitText(t){
+  const c = Math.ceil(t.length/2);
+  return [t.slice(0,c)||" ", t.slice(c)||" "];
+}
+
+function render(){
+  const key    = activeVehicleKey();
+  const cfg    = PRICING[key];
+  const isBike = state.vehicle === "bike";
+  const text   = state.text || "ENTER NUMBER";
+
+  plateFront.className = cfg.cls;
+  plateBack.className  = cfg.cls;
+  const isDemo = state.text.trim() === "";
+  const displayVal = isDemo ? currentCyclePlate : text;
+  plateFrontText.textContent = displayVal;
+  plateFrontText.style.opacity = "1";
+
+  if(isBike){
+    plateBack.className = cfg.cls.replace('bike','bike bike-square');
+    plateBackText.style.display = "none";
+    plateBackStack.style.display = "flex";
+    const backVal = isDemo ? currentCyclePlate : text;
+    const [l1,l2] = splitText(backVal);
+    plateBackLine1.textContent = l1;
+    plateBackLine2.textContent = l2;
+    plateBackStack.style.opacity = "1";
+  } else {
+    plateBackText.style.display = "flex";
+    plateBackText.textContent   = displayVal;
+    plateBackText.style.opacity = "1";
+    plateBackStack.style.display = "none";
+  }
+
+  const showFront = isBike ? (state.side==="front"||state.side==="both") : true;
+  const showBack  = isBike ? (state.side==="back" ||state.side==="both") : false;
+  frontItem.classList.toggle('hidden', !showFront);
+  backItem.classList.toggle('hidden',  !showBack);
+  plateRow.classList.toggle('show-tags', showFront && showBack);
+
+  const colorLabel = key.startsWith("commercial") ? "Yellow base" : "White base";
+  const sideLabel  = state.side==="both" ? "Front + Back" : state.side==="front" ? "Front" : "Back";
+  plateCaption.textContent = `${cfg.label.replace(' HSRP','')} · ${sideLabel} · ${colorLabel}`;
+
+  const isBoth     = state.side === "both";
+  const unitPrice  = isBoth ? cfg.unit : cfg.single;
+
+  document.getElementById('sumVehicle').textContent    = cfg.label;
+  document.getElementById('sumUnitPrice').textContent  = `₹${unitPrice}`;
+  document.getElementById('sumConfig').textContent     = isBoth ? "Front + Back · 1 set" : `${sideLabel} · 1 plate`;
+  document.getElementById('sumTotal').textContent      = `₹${unitPrice}`;
+
+  // auto-scale plate font
+  const len = displayVal.length;
+  const carFontSize = len <= 9 ? "2.5rem" : len <= 10 ? "2.1rem" : "1.8rem";
+  const bikeFontSize = len <= 9 ? "1.3rem" : "1.1rem";
+  document.querySelectorAll('.plate.car .plate-number, .plate.commercial-car .plate-number, .plate.commercial-truck .plate-number').forEach(el=>{
+    el.style.fontSize = carFontSize;
+  });
+  document.querySelectorAll('.plate.bike:not(.bike-square) .plate-number').forEach(el=>{
+    el.style.fontSize = bikeFontSize;
+  });
+
+  // mandatory: must enter something
+  bookBtn.disabled = !(termsCheck.checked && state.text.trim().length >= 1);
+}
+
+vehicleTabs.forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    vehicleTabs.forEach(t=>t.classList.remove('active'));
+    tab.classList.add('active');
+    state.vehicle = tab.dataset.type;
+    commercialSubTabs.classList.toggle('visible', state.vehicle==="commercial");
+    render();
+  });
+});
+
+subTabs.forEach(st=>{
+  st.addEventListener('click',()=>{
+    subTabs.forEach(t=>t.classList.remove('active'));
+    st.classList.add('active');
+    state.commercialSub = st.dataset.sub;
+    render();
+  });
+});
+
+plateInput.addEventListener('input',e=>{
+  const val = e.target.value.toUpperCase().replace(/[^A-Z0-9\- ]/g,'');
+  e.target.value = val;
+  state.text = val;
+  render();
+});
+
+sideOpts.forEach(opt=>{
+  opt.addEventListener('click',()=>{
+    sideOpts.forEach(o=>o.classList.remove('active'));
+    opt.classList.add('active');
+    state.side = opt.dataset.side;
+    render();
+  });
+});
+
+termsCheck.addEventListener('change', render);
+
+// ---- Open modal ----
+bookBtn.addEventListener('click',()=>{
+  const key   = activeVehicleKey();
+  const cfg   = PRICING[key];
+  const isBoth = state.side==="both";
+  const price = isBoth ? cfg.unit : cfg.single;
+  const sideLabel = state.side==="both" ? "Front + Back" : state.side==="front" ? "Front" : "Back";
+  const colorLabel = key.startsWith("commercial") ? "Yellow base (commercial)" : "White base (private)";
+
+  // populate mini plate
+  const displayText = state.text || "ENTER NUMBER";
+  const isBikeModal = state.vehicle === "bike";
+
+  if(isBikeModal){
+    // hide single, show bike dual
+    document.getElementById('miniSingle').style.display   = 'none';
+    document.getElementById('miniBikeWrap').style.display = 'block';
+
+    // update front plate number
+    document.getElementById('miniBikeFrontNum').textContent = displayText;
+
+    // update back plate two-line
+    const cut = Math.ceil(displayText.length/2);
+    document.getElementById('miniBikeL1').textContent = displayText.slice(0,cut)||' ';
+    document.getElementById('miniBikeL2').textContent = displayText.slice(cut)||' ';
+
+    // show/hide front & back items based on side selection
+    const showF = state.side==='front'||state.side==='both';
+    const showB = state.side==='back' ||state.side==='both';
+    document.getElementById('miniBikeFrontItem').classList.toggle('hidden',!showF);
+    document.getElementById('miniBikeBackItem').classList.toggle('hidden',!showB);
+
+    // hide the tag labels if only one is shown
+    document.querySelectorAll('#miniBikeWrap .mini-tag').forEach(t=>{
+      t.style.display = (showF && showB) ? 'block' : 'none';
+    });
+  } else {
+    // show single, hide bike dual
+    document.getElementById('miniSingle').style.display   = 'block';
+    document.getElementById('miniBikeWrap').style.display = 'none';
+    miniNum.textContent = displayText;
+    miniPlate.className = "mini-plate" + (key.startsWith("commercial") ? " commercial" : "");
+  }
+
+  miniLabel.textContent = `${cfg.label.replace(' HSRP','')} · ${sideLabel}`;
+  document.getElementById('modalPlateHeading').textContent = `${cfg.label} — ${state.text}`;
+  document.getElementById('modalPlateSub').textContent = `${sideLabel} · ${colorLabel}`;
+
+  // populate modal summary
+  document.getElementById('msSumVehicle').textContent = cfg.label;
+  document.getElementById('msSumPrice').textContent   = `₹${price}`;
+  document.getElementById('msSumConfig').textContent  = isBoth ? "Front + Back · 1 set" : `${sideLabel} · 1 plate`;
+  document.getElementById('msSumTotal').textContent   = `₹${price}`;
+  document.getElementById('payNowAmount').textContent = `₹${price}`;
+
+  // store price for pay button
+  payNowBtn.dataset.amount = price;
+  payNowBtn.dataset.label  = cfg.label;
+
+  modalOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+});
+
+// ---- Close modal ----
+modalClose.addEventListener('click', closeModal);
+modalOverlay.addEventListener('click', e=>{ if(e.target===modalOverlay) closeModal(); });
+function closeModal(){
+  modalOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ---- Pay Now ----
+payNowBtn.addEventListener('click', async ()=>{
+  const name   = document.getElementById('addrName').value.trim();
+  const phone  = document.getElementById('addrPhone').value.trim();
+  const street = document.getElementById('addrStreet').value.trim();
+  const city   = document.getElementById('addrCity').value.trim();
+  const pin    = document.getElementById('addrPin').value.trim();
+  const stateV = document.getElementById('addrState').value;
+  const landmark = document.getElementById('addrLandmark').value.trim();
+
+  if(!name||!phone||!street||!city||!pin||!stateV){
+    alert('Please fill all required fields before proceeding.'); return;
+  }
+  if(phone.length!==10||isNaN(phone)){ alert('Enter a valid 10-digit phone number.'); return; }
+  if(pin.length!==6||isNaN(pin)){ alert('Enter a valid 6-digit pincode.'); return; }
+
+  const labelText  = payNowBtn.dataset.label;
+  const vehicleKey = activeVehicleKey();
+
+  if(!window.Razorpay){
+    alert("Payment gateway could not load. Please check your internet connection and try again.\n\nIf the problem continues, call us at +91 98357 66672 to place your order:\n" +
+          labelText + "\nNumber: " + state.text + "\nPlates: " + state.side +
+          "\n\nDeliver to:\n" + name + ", " + phone +
+          "\n" + street + ", " + city + " - " + pin + ", " + stateV);
+    return;
+  }
+
+  const originalBtnHtml = payNowBtn.innerHTML;
+  payNowBtn.disabled = true;
+  payNowBtn.innerHTML = "<span>Preparing payment…</span>";
+
+  // ================================================================
+  // STEP 1 — Ask our own backend to create the Razorpay order.
+  // The backend recalculates the price itself (it never trusts a
+  // price sent from the browser), so the amount cannot be tampered
+  // with via dev tools before this point.
+  // ================================================================
+  let orderData;
+  try{
+    const orderRes = await fetch('/api/create-order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        vehicleType: vehicleKey,
+        side: state.side,
+        customer: { name, phone, plateNumber: state.text }
+      })
+    });
+    if(!orderRes.ok) throw new Error('order create failed');
+    orderData = await orderRes.json();
+  }catch(err){
+    payNowBtn.disabled = false;
+    payNowBtn.innerHTML = originalBtnHtml;
+    alert("Couldn't start the payment. Please check your connection and try again, or call us at +91 98357 66672.");
+    return;
+  }
+
+  payNowBtn.innerHTML = originalBtnHtml;
+  payNowBtn.disabled = false;
+
+  const options = {
+    key: orderData.key_id,
+    amount: orderData.amount,
+    currency: orderData.currency,
+    order_id: orderData.order_id,
+    name: "BharatPlate HSRP",
+    description: `${labelText} — ${state.text} (${state.side})`,
+
+    notes: {
+      customer_name: name,
+      customer_phone: phone,
+      customer_city: city,
+      customer_state: stateV,
+      customer_pincode: pin,
+      plate_number: state.text,
+      vehicle_type: vehicleKey,
+      sides: state.side,
+      delivery_address: `${street}, ${city} - ${pin}, ${stateV}`,
+      landmark: landmark
+    },
+
+    theme: { color: "#1e4d9c" },
+
+    handler: async function(response){
+      // ==============================================================
+      // STEP 2 — Verify the payment signature on our own backend
+      // before trusting that money actually changed hands.
+      // ==============================================================
+      try{
+        const verifyRes = await fetch('/api/verify-payment', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            razorpay_order_id: response.razorpay_order_id,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature,
+            order: {
+              vehicleLabel: labelText,
+              plateNumber: state.text,
+              side: state.side,
+              amount: orderData.amount_rupees,
+              name, phone, address: street, landmark, city, pin, state: stateV
+            }
+          })
+        });
+        const verifyData = await verifyRes.json();
+
+        if(verifyData.verified){
+          if(typeof window.metaPurchase === 'function'){
+            window.metaPurchase(orderData.amount_rupees);
+          }
+          window.location.href =
+            "success.html?payment_id=" + encodeURIComponent(response.razorpay_payment_id) +
+            "&amount=" + encodeURIComponent(orderData.amount_rupees) +
+            "&plate=" + encodeURIComponent(state.text);
+        } else {
+          window.location.href = "failed.html";
+        }
+      }catch(err){
+        // Payment likely went through but we couldn't reach our server to verify.
+        // Send them to support rather than a hard failure page.
+        window.location.href =
+          "success.html?payment_id=" + encodeURIComponent(response.razorpay_payment_id) +
+          "&amount=" + encodeURIComponent(orderData.amount_rupees) +
+          "&plate=" + encodeURIComponent(state.text) + "&unverified=1";
+      }
+    }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.on("payment.failed", function(){
+    if(typeof window.metaFailed === 'function') window.metaFailed();
+    window.location.href = "failed.html";
+  });
+  rzp.open();
+});
+
+// ── CYCLING DEMO PLATES ──────────────────────────────────────────
+const cyclePlates = ["JAAT 0001", "DL01AA0001", "KRISHNA", "MH04H0008", "AMIT X 23"];
+let cycleIndex = 0;
+let currentCyclePlate = cyclePlates[0];
+
+function cycleDemoPlate(){
+  if(state.text.trim() !== "") return; // stop cycling once user types
+  const input = document.getElementById('plateInput');
+
+  // fade out
+  input.style.transition = "opacity 0.4s";
+  input.style.opacity = "0";
+  plateFrontText.style.transition = "opacity 0.4s";
+  plateFrontText.style.opacity = "0";
+  if(plateBackText) { plateBackText.style.transition="opacity 0.4s"; plateBackText.style.opacity="0"; }
+
+  setTimeout(()=>{
+    cycleIndex = (cycleIndex + 1) % cyclePlates.length;
+    currentCyclePlate = cyclePlates[cycleIndex];
+    input.placeholder = currentCyclePlate;
+    render(); // update plate text
+
+    // fade in
+    input.style.opacity = "1";
+    plateFrontText.style.opacity = "1";
+    if(plateBackText) plateBackText.style.opacity = "1";
+  }, 400);
+}
+
+// start cycling every 3 seconds
+setInterval(cycleDemoPlate, 3000);
+
+render();
+</script>
+</body>
+<script src="pixel.js"></script>
+</html>
