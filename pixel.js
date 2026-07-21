@@ -1,6 +1,6 @@
 // ================================
 // BharatPlate Meta Pixel
-// Pixel ID: 2207825566632731
+// Pixel ID: 1749390239581102
 // ================================
 
 (function(f,b,e,v,n,t,s){
@@ -20,7 +20,7 @@ s.parentNode.insertBefore(t,s);
 })(window,document,'script',
 'https://connect.facebook.net/en_US/fbevents.js');
 
-fbq('init','2207825566632731');
+fbq('init','1749390239581102');
 fbq('track','PageView');
 
 // Product viewed
