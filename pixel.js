@@ -21,43 +21,36 @@ s.parentNode.insertBefore(t,s);
 'https://connect.facebook.net/en_US/fbevents.js');
 
 fbq('init','1362559915321801');
+
+// PageView — fires once on page load
 fbq('track','PageView');
 
-// Product viewed
-fbq('track','ViewContent');
-
-// Vehicle Number
-const plate=document.getElementById("plateInput");
-if(plate){
-let done=false;
-plate.addEventListener("input",()=>{
-if(done) return;
-if(plate.value.length>=4){
-done=true;
-fbq("track","Lead");
-}
-});
-}
-
-// Book Now
+// Book Now → InitiateCheckout (fires once only)
 const book=document.getElementById("bookBtn");
 if(book){
+let checkoutFired=false;
 book.addEventListener("click",()=>{
+if(checkoutFired) return;
+checkoutFired=true;
 fbq("track","InitiateCheckout");
 });
 }
 
-// Address Started
-["addrName","addrPhone","addrStreet","addrCity","addrPin"].forEach(id=>{
+// Address form → AddPaymentInfo (fires ONCE total, not once per field)
+const addressFields=["addrName","addrPhone","addrStreet","addrCity","addrPin"];
+let paymentInfoFired=false;
+addressFields.forEach(id=>{
 const el=document.getElementById(id);
 if(el){
 el.addEventListener("focus",()=>{
+if(paymentInfoFired) return;
+paymentInfoFired=true;
 fbq("track","AddPaymentInfo");
 },{once:true});
 }
 });
 
-// Purchase
+// Purchase — call window.metaPurchase(amount) on successful order
 window.metaPurchase=function(amount){
 fbq("track","Purchase",{
 value:amount,
@@ -65,7 +58,7 @@ currency:"INR"
 });
 };
 
-// Payment Failed
+// Payment Failed (custom event, kept separately — remove this block too if you don't want it)
 window.metaFailed=function(){
 fbq("trackCustom","PaymentFailed");
 };
