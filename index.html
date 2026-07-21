@@ -60,9 +60,9 @@ h1{font-family:'Oswald',sans-serif;font-weight:600;font-size:clamp(1.7rem,4.5vw,
   transition:background 0.25s,width 0.3s,height 0.3s;overflow:hidden;
 }
 .plate.commercial{background:var(--yellow);}
-.plate.car,.plate.commercial-car,.plate.commercial-truck{width:400px;height:90px;}
-.plate.bike{width:260px;height:82px;}
-.plate.bike-square{width:200px;height:172px;}
+.plate.car,.plate.commercial-car,.plate.commercial-truck{width:min(400px, calc(100vw - 48px));aspect-ratio:400/90;height:auto;}
+.plate.bike{width:min(260px, calc(100vw - 48px));aspect-ratio:260/82;height:auto;}
+.plate.bike-square{width:min(200px, calc(100vw - 48px));aspect-ratio:200/172;height:auto;}
 
 .plate-left{
   flex-shrink:0;width:46px;display:flex;flex-direction:column;
