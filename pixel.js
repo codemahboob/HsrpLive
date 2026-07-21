@@ -22,6 +22,9 @@ s.parentNode.insertBefore(t,s);
 
 fbq('init','1362559915321801');
 
+// Disable Meta's automatic event detection (stops "Subscribed", etc. from auto-firing)
+fbq('set','autoConfig',false,'1362559915321801');
+
 // PageView — fires once on page load
 fbq('track','PageView');
 
@@ -56,9 +59,4 @@ fbq("track","Purchase",{
 value:amount,
 currency:"INR"
 });
-};
-
-// Payment Failed (custom event, kept separately — remove this block too if you don't want it)
-window.metaFailed=function(){
-fbq("trackCustom","PaymentFailed");
 };
