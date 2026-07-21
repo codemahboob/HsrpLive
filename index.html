@@ -122,8 +122,19 @@ input[type="text"]:focus,input[type="tel"]:focus,select:focus,textarea:focus{bor
 .summary-row.total span:last-child{font-family:'IBM Plex Mono',monospace;}
 
 /* TERMS */
-.terms{display:flex;align-items:flex-start;gap:9px;margin:18px 0;font-size:0.82rem;color:var(--mist);}
-.terms input{margin-top:3px;width:15px;height:15px;accent-color:var(--ink);}
+.terms{display:flex;align-items:flex-start;gap:10px;margin:18px 0;font-size:0.82rem;color:var(--mist);}
+.terms input{
+  -webkit-appearance:none;appearance:none;
+  margin-top:1px;width:21px;height:21px;flex-shrink:0;
+  border:2px solid var(--ink);border-radius:5px;
+  background:#fff;position:relative;cursor:pointer;
+}
+.terms input:checked{background:var(--ink);}
+.terms input:checked::after{
+  content:'';position:absolute;left:6px;top:2px;
+  width:5px;height:10px;border:solid #fff;border-width:0 2px 2px 0;
+  transform:rotate(45deg);
+}
 .terms a{color:var(--ink);text-decoration:underline;}
 
 /* BOOK NOW BUTTON */
