@@ -82,8 +82,8 @@ h1{font-family:'Oswald',sans-serif;font-weight:600;font-size:clamp(1.7rem,4.5vw,
   text-shadow:1px 1.5px 0 rgba(0,0,0,0.22),2px 3px 4px rgba(0,0,0,0.18);
   transition:font-size 0.2s;
 }
-.plate.car .plate-number,.plate.commercial-car .plate-number,.plate.commercial-truck .plate-number{ transition:opacity 0.4s ease;font-size:2.5rem;}
-.plate.bike:not(.bike-square) .plate-number{ transition:opacity 0.4s ease;font-size:1.3rem;}
+.plate.car .plate-number,.plate.commercial-car .plate-number,.plate.commercial-truck .plate-number{ transition:opacity 0.4s ease;font-size:clamp(1.4rem, 8.5vw, 2.5rem);}
+.plate.bike:not(.bike-square) .plate-number{ transition:opacity 0.4s ease;font-size:clamp(0.85rem, 4.8vw, 1.3rem);}
 
 .plate-number-stack{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0 8px;}
 .plate-line{
