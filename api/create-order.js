@@ -5,10 +5,10 @@ const Razorpay = require("razorpay");
 // from the browser. If you change a price on the site, change it
 // here too or the two will fall out of sync.
 const PRICING = {
-  car:                { unit: 650, single: 350 },
-  bike:                { unit: 450, single: 2.4 },
-  "commercial-truck":  { unit: 750, single: 400 },
-  "commercial-car":    { unit: 700, single: 380 },
+  car:                { unit: 1490, single: 800 },
+  bike:                { unit: 690, single: 400 },
+  "commercial-truck":  { unit: 1590, single: 900 },
+  "commercial-car":    { unit: 1490, single: 800 },
 };
 
 module.exports = async (req, res) => {
