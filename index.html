@@ -746,10 +746,10 @@ bookBtn.addEventListener('click',()=>{
   document.getElementById('modalPlateSub').textContent = `${sideLabel} · ${colorLabel}`;
 
   // populate modal summary
-  document.getElementById('sumVehicle').textContent    = `${cfg.label}, ${sideLabel}`;
-document.getElementById('sumUnitPrice').textContent  = `₹${unitPrice}`;
-document.getElementById('msSumConfig').textContent  = isBoth ? "Front + Back · 1 set" : `${sideLabel} · 1 plate`;
-document.getElementById('sumTotal').textContent      = `₹${unitPrice}`;
+  document.getElementById('msSumVehicle').textContent = cfg.label;
+  document.getElementById('msSumPrice').textContent   = `₹${price}`;
+  document.getElementById('msSumConfig').textContent  = isBoth ? "Front + Back · 1 set" : `${sideLabel} · 1 plate`;
+  document.getElementById('msSumTotal').textContent   = `₹${price}`;
   document.getElementById('payNowAmount').textContent = `₹${price}`;
 
   // store price for pay button
