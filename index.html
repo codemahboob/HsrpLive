@@ -642,8 +642,7 @@ function render(){
   const unitPrice  = isBoth ? cfg.unit : cfg.single;
 
   document.getElementById('sumVehicle').textContent    = cfg.label;
-  document.getElementById('sumUnitPrice').textContent  = `₹${unitPrice}`;
-  document.getElementById('sumConfig').textContent     = isBoth ? "Front + Back · 1 set" : `${sideLabel} · 1 plate`;
+ document.getElementById('sumUnitPrice').textContent  = `₹${unitPrice}`;
   document.getElementById('sumTotal').textContent      = `₹${unitPrice}`;
 
   // auto-scale plate font
