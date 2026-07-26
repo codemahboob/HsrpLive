@@ -6,7 +6,7 @@ const Razorpay = require("razorpay");
 // here too or the two will fall out of sync.
 const PRICING = {
   car:                { unit: 1490, single: 800 },
-  bike:                { unit: 1.99, single: 400 },
+  bike:                { unit: 790, single: 400 },
   "commercial-truck":  { unit: 1590, single: 900 },
   "commercial-car":    { unit: 1490, single: 800 },
 };
